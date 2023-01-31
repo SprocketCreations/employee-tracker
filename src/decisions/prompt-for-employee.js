@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const getEmployeeChoices = require("../inquirer/get-employee-choices");
 const getRoleChoices = require("../inquirer/get-role-choices");
+const addEmployee = require("../sql/add-employee");
 const getEmployees = require("../sql/get-employees");
 const getRoles = require("../sql/get-roles");
 
@@ -30,11 +31,14 @@ const promptForEmployee = async () => {
 			type: "input",
 			message: "Please select their manager:",
 			name: "managerId",
-			choices: getEmployeeChoices(employees),
+			choices: getEmployeeChoices(employees, true),
 		},
 	]);
-	console.log(`Employee ${firstName} ${lastName} has role ${roleId} and manager ${managerId}`);
-	// TODO: Add employee to database.
+	await addEmployee(firstName, lastName, roleId, managerId);
+
+	console.log(`Registered new employee: ${firstName} ${lastName}\nRole: ${roleId}.`);
+	if(managerId)
+		console.log(`Manager: ${managerId}`);
 };
 
 module.exports = promptForEmployee;

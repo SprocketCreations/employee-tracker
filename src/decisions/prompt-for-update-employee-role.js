@@ -1,8 +1,9 @@
 const inquirer = require("inquirer");
 const getEmployeeChoices = require("../inquirer/get-employee-choices");
 const getRoleChoices = require("../inquirer/get-role-choices");
-const getDepartments = require("../sql/get-departments");
 const getEmployees = require("../sql/get-employees");
+const getRoles = require("../sql/get-roles");
+const setEmployeeRole = require("../sql/set-employee-role");
 
 /**
  * WHEN I choose to update an employee role
@@ -10,7 +11,7 @@ const getEmployees = require("../sql/get-employees");
  */
 const promptForUpdateEmployeeRole = async () => {
 	const employees = await getEmployees();
-	const departments = await getDepartments();
+	const roles = await getRoles();
 
 	const { employeeId, roleId } = await inquirer.prompt([
 		{
@@ -22,12 +23,19 @@ const promptForUpdateEmployeeRole = async () => {
 			type: "list",
 			message: "Please select a new role:",
 			name: "roleId",
-			choices: getRoleChoices(departments),
+			choices: getRoleChoices(roles),
 		},
 	]);
 
-	console.log(`Selected employee ${employeeId} and role ${roleId}`);
-	// TODO: Update the employee in the db
+	await setEmployeeRole(employeeId, roleId);
+
+	const employee = employees.find(employee => employee.id == employeeId);
+
+	/** @type {string} The name of the employee edited. */
+	const name = `${employee.first_name} ${employee.last_name}`;
+	/** @type {string} The name of the employee's new role. */
+	const role = roles.find(role => role.id == roleId).title;
+	console.log(`Updated ${name}${name.charAt(name.length - 1) == "s" ? "'" : "'s"} role to ${role}.`);
 };
 
 module.exports = promptForUpdateEmployeeRole;

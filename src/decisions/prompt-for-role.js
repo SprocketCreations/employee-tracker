@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const getDepartmentChoices = require("../inquirer/get-department-choices");
+const addRole = require("../sql/add-role");
 const getDepartments = require("../sql/get-departments");
 
 /**
@@ -26,9 +27,9 @@ const promptForRole = async () => {
 		},
 	]);
 
-	console.log(`Role: ${title}, Salary: ${salary}, Department: ${departmentId}`);
-
-	// TODO: Store the new role in the db
+	await addRole(title, parseFloat(salary), departmentId);
+	
+	console.log(`Created new role: ${title}\nSalary: ${salary}\nDepartment: ${departmentId}`);
 };
 
 module.exports = promptForRole;
