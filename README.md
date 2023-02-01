@@ -20,7 +20,7 @@ Unfortunatly, this tool is not usable by anyone but me. This is because it is de
 
 ## Demo
 
-This [video]() hosted on google drive shows the tool in action.
+This [video](https://drive.google.com/file/d/1hrQY92glN4ANdQdZqu0ktUWI2EwLJaB6/view?usp=sharing) hosted on google drive shows the tool in action.
 
 ## License
 
