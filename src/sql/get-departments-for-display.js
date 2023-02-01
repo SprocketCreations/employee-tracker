@@ -1,12 +1,12 @@
 const connection = require("./connection");
 
 /**
- * Selects all the roles from the database.
+ * Selects all the departments from the database.
  * @returns data from mysql.
  */
-const getRoles = async () => {
+const getDepartmentsForDisplay = async () => {
 	try {
-		const sql = "SELECT * FROM roles;";
+		const sql = "SELECT name AS `Name` FROM departments;";
 		const [rows, fields] = await connection.query(sql);
 		
 		return rows;
@@ -16,4 +16,4 @@ const getRoles = async () => {
 	}
 };
 
-module.exports = getRoles;
+module.exports = getDepartmentsForDisplay;

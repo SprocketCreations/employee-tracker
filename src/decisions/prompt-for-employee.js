@@ -13,32 +13,34 @@ const promptForEmployee = async () => {
 	const roles = await getRoles();
 	const employees = await getEmployees();
 
-	const {firstName, lastName, roleId, managerId} = await inquirer.prompt([
+	const { firstName, lastName, roleId, managerId } = await inquirer.prompt([
 		{
 			type: "input",
 			message: "Please enter their first name:",
 			name: "firstName",
-		},{
+		}, {
 			type: "input",
 			message: "Please enter their last name:",
 			name: "lastName",
-		},{
-			type: "input",
+		}, {
+			type: "list",
 			message: "Please select their role:",
 			name: "roleId",
 			choices: getRoleChoices(roles),
-		},{
-			type: "input",
+		}, {
+			type: "list",
 			message: "Please select their manager:",
 			name: "managerId",
 			choices: getEmployeeChoices(employees, true),
 		},
 	]);
 	await addEmployee(firstName, lastName, roleId, managerId);
-
-	console.log(`Registered new employee: ${firstName} ${lastName}\nRole: ${roleId}.`);
-	if(managerId)
-		console.log(`Manager: ${managerId}`);
+	const role = roles.find(role => role.id == roleId);
+	console.log(`Registered new employee: ${firstName} ${lastName}\nRole: ${role.title}.`);
+	if (managerId) {
+		const manager = employees.find(employee => employee.id == managerId);
+		console.log(`Manager: ${manager.last_name}`);
+	}
 };
 
 module.exports = promptForEmployee;

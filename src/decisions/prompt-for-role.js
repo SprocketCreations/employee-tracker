@@ -18,7 +18,7 @@ const promptForRole = async () => {
 		}, {
 			type: "input",
 			message: "Please enter this role's salary:",
-			name: "salaryName",
+			name: "salary",
 		}, {
 			type: "list",
 			message: "Please select this role's department:",
@@ -29,7 +29,9 @@ const promptForRole = async () => {
 
 	await addRole(title, parseFloat(salary), departmentId);
 	
-	console.log(`Created new role: ${title}\nSalary: ${salary}\nDepartment: ${departmentId}`);
+	const department = departments.find(department => department.id == departmentId);
+
+	console.log(`Created new role: ${title}\nSalary: ${salary}\nDepartment: ${department.name}`);
 };
 
 module.exports = promptForRole;
